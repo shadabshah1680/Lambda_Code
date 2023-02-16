@@ -38,6 +38,7 @@ jobs:
             apk -v --purge del py-pip
             apk -v --no-cache add bash
             apk -v --no-cache add make
+            apk -v --no-cache add zip
 
       - run:
           name: Deploy Lambda Code
@@ -68,6 +69,7 @@ jobs:
             apk -v --purge del py-pip
             apk -v --no-cache add bash
             apk -v --no-cache add make
+            apk -v --no-cache add zip
 
       - run:
           name: Deploy Lambda Code
