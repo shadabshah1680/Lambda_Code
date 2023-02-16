@@ -10,9 +10,12 @@ layer:
 	cd ..
 	# zip -g lambda_package.zip ${FUNCTION_NAME}.py
 	$(eval LAYER_ARN=$(aws lambda publish-layer-version --layer-name openpyxl --zip-file fileb://openpyxl-layer.zip --output text --query 'LayerArn'))
+	echo ${LAYER_ARN} 
 role-policy:
 	cat role_policy.json | sed "s/BUCKET_NAME/${BUCKET_NAME}/g" > parsed-policy-document.json
 	$(eval ROLE_ARN=$(aws iam create-role --role-name lambda-role-for-s3 --assume-role-policy-document file://parsed-policy-document.json --output text --query 'Role.Arn'))
+	echo ${ROLE_ARN} 
+
 
 function:
 	zip -r9 lambda_function.zip ${FUNCTION_NAME}.py
