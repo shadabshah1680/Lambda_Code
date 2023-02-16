@@ -30,17 +30,7 @@ jobs:
       - run:
           name: Deploy Lambda Code
           command: |
-            make layer
-            make role-policy
-            make function
-      - when:
-          condition:
-            on_fail
-          steps:
-            - run: 
-                name: Update Lambda Code
-                command: |
-                  make update-function 
+            echo "hi"
 
 workflows:
   version: 2
