@@ -1,16 +1,10 @@
 version: 2.1
-
-parameters:
-  update-lambda:
-    type: boolean
-    default: true
-
 executors:
   makefile:
     docker:
       - image: docker:18.09.3-git
 
-env:
+environment:
   FUNCTION_NAME: lambda_check_open_ports
   BUCKET_NAME: testbucketshadab
   OPEN_PORTS_FILE_NAME: open_ports.xlxs
@@ -39,59 +33,26 @@ jobs:
             apk -v --no-cache add bash
             apk -v --no-cache add make
             apk -v --no-cache add zip
-
       - run:
           name: Deploy Lambda Code
           command: |
             make layer
             make role-policy
             make function
-  update-lambda:
-    executor: makefile
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 18.09.3
-
-      # Set up the AWS CLI
-      - run:
-          name: Set up AWS CLI
-          command: |
-            cat /etc/os-release
-            apk -v --no-cache add \
-            python \
-            py-pip \
-            groff \
-            less \
-            mailcap \
-            && \
-            pip install --upgrade awscli  s3cmd==2.0.2 python-magic && \
-            apk -v --purge del py-pip
-            apk -v --no-cache add bash
-            apk -v --no-cache add make
-            apk -v --no-cache add zip
-
-      - run:
-          name: Deploy Lambda Code
-          command: |
-             make update-function
+      - when:
+          condition:
+            on_fail
+          steps:
+            - run: 
+                name: Update Lambda Code
+                command: |
+                  make update-function 
 
 workflows:
   version: 2
   build_lambda_main:
-    when:
-      equal: [ false, << pipeline.parameters.update-lambda >> ]
     jobs:
       - deploy-lambda:
-          filters:
-            branches:
-              only: main
-          context: eurus
-  update_lambda_main:
-    when:
-      equal: [ true, << pipeline.parameters.update-lambda >> ]
-    jobs:
-      - update-lambda:
           filters:
             branches:
               only: main

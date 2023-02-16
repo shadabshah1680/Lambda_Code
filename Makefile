@@ -26,7 +26,7 @@ function:
 	--zip-file fileb://lambda_function.zip
 
 update-function:
-	zip -r9 lambda_function.zip ${FUNCTION_NAME}.py
+	zip lambda_function.zip ${FUNCTION_NAME}.py
 	aws lambda update-function-code \
 	--function-name ${FUNCTION_NAME} \
 	--zip-file fileb://lambda_function.zip
