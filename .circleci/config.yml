@@ -3,11 +3,6 @@ executors:
   makefile:
     docker:
       - image: docker:18.09.3-git
-
-environment:
-  FUNCTION_NAME: lambda_check_open_ports
-  BUCKET_NAME: testbucketshadab
-  OPEN_PORTS_FILE_NAME: open_ports.xlxs
 jobs:
   deploy-lambda:
     executor: makefile
@@ -28,8 +23,7 @@ jobs:
             less \
             mailcap \
             && \
-            pip install --upgrade awscli  s3cmd==2.0.2 python-magic && \
-            apk -v --purge del py-pip
+            pip install --upgrade awscli  s3cmd==2.0.2 python-magic
             apk -v --no-cache add bash
             apk -v --no-cache add make
             apk -v --no-cache add zip
