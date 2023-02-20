@@ -10,4 +10,4 @@ RUN  pip3 install -r requirements.txt --target .
 COPY lambda_check_open_ports.py .
 
 # Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
-CMD [ "lambda_check_open_ports.handler" ]
+CMD [ "app.handler" ]
