@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 COMMIT := $(shell git rev-parse --short HEAD)
 SHORT_SHA=$(COMMIT)
-.PHONY: layer role-policy function
+.PHONY: layer role-policy function update-docker-image-for-lambda
 FUNCTION_NAME=dockerized_lambda_check_open_ports
 ECR_REPO_NAME=shadab
 
@@ -43,7 +43,7 @@ build:
 	docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA} .
 push:
 	docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA}
-upldate-docker-image-for-lambda:
+update-docker-image-for-lambda:
     aws lambda update-function-configuration --region us-east-1 --function-name ${FUNCTION_NAME} \
     --package-type Image  \
     --code ImageUri=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA} 
