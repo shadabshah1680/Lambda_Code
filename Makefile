@@ -44,5 +44,5 @@ build:
 push:
 	docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA}
 update:
-    a=$(shell aws lambda update-function-code --region ${AWS_DEFAULT_REGION} --function-name ${FUNCTION_NAME} --image-uri ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA} --publish)
+	aws lambda update-function-code --region ${AWS_DEFAULT_REGION} --function-name ${FUNCTION_NAME} --image-uri ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA} --publish
 
