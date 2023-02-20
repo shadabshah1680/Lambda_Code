@@ -36,7 +36,7 @@ jobs:
           command: |
             make login
             make push
-            make upldate-docker-image-for-lambda
+            make update-docker-image-for-lambda
 
 workflows:
   version: 2
