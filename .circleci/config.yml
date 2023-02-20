@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Deploy Lambda Code
           command: |
-            echo "hi"
+            make update-function
 
 workflows:
   version: 2

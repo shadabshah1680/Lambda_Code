@@ -1,6 +1,7 @@
 SHELL := /bin/bash
 
 .PHONY: layer role-policy function
+FUNCTION_NAME=lambda_check_open_ports
 
 layer:
 	mkdir lambda_package
