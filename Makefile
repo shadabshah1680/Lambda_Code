@@ -43,7 +43,7 @@ build:
 	docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA} .
 push:
 	docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA}
+	export ImageUri=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA}
 upldate-docker-image-for-lambda:
     aws lambda update-function-code --region us-east-1 --function-name ${FUNCTION_NAME} \
-    --package-type Image  \
-    --code ImageUri=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA} 
+    --code ImageUri=${ImageUri} 
