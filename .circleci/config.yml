@@ -35,9 +35,6 @@ jobs:
           name: PUSH IMAGE TO ECR
           command: |
             make build
-      - run:
-          name: UPDATE LAMBDA DOCKER IMAGE
-          command: |
             make upldate-docker-image-for-lambda
 
 workflows:
