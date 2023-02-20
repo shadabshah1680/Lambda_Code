@@ -1,7 +1,9 @@
 SHELL := /bin/bash
-
+COMMIT := $(shell git rev-parse --short HEAD)
+SHORT_SHA=$(COMMIT)
 .PHONY: layer role-policy function
-FUNCTION_NAME=lambda_check_open_ports
+FUNCTION_NAME=dockerized_lambda_check_open_ports
+
 
 layer:
 	mkdir lambda_package
@@ -28,9 +30,20 @@ function:
 	--environment Variables="{BUCKET_NAME=${BUCKET_NAME}, OPEN_PORTS_FILE_NAME=${OPEN_PORTS_FILE_NAME}}" \
 	--layers ${LAYER_ARN} \
 	--zip-file fileb://lambda_function.zip
+	
 
 update-function:
 	zip lambda_function.zip ${FUNCTION_NAME}.py
 	aws lambda update-function-code \
 	--function-name ${FUNCTION_NAME} \
 	--zip-file fileb://lambda_function.zip
+ecr-login:
+	aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
+build:	
+	docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA} .
+push:
+	docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA}
+upldate-docker-image-for-lambda:
+    aws lambda update-function-code --region us-east-1 --function-name ${FUNCTION_NAME} \
+    --package-type Image  \
+    --code ImageUri=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPO_NAME}:${SHORT_SHA} 
