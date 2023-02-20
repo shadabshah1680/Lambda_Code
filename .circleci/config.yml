@@ -36,8 +36,7 @@ jobs:
           command: |
             make ecr-login
             make push
-            make update-docker-image-for-lambda
-
+            make update
 workflows:
   version: 2
   build_lambda_main:
