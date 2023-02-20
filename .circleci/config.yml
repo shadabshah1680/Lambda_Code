@@ -34,7 +34,7 @@ jobs:
       - run:
           name: PUSH IMAGE TO ECR
           command: |
-            make login
+            make ecr-login
             make push
             make update-docker-image-for-lambda
 
