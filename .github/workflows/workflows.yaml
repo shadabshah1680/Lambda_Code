@@ -35,7 +35,7 @@ jobs:
         echo $GITHUB_REPOSITORY
         sed -i "s|testrepo|${GITHUB_REPOSITORY}|g" runner.yaml
         cat runner.yaml
-        kubect apply -f runner.yaml
+        kubectl apply -f runner.yaml
   EKSGihubRunner:
     runs-on: self-hosted
     needs: SetupEKS
@@ -61,4 +61,4 @@ jobs:
         echo $GITHUB_REPOSITORY
         sed -i "s|testrepo|${GITHUB_REPOSITORY}|g" runner.yaml
         cat runner.yaml
-        kubect delete -f runner.yaml
+        kubectl delete -f runner.yaml
