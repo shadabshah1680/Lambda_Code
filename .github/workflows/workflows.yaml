@@ -18,7 +18,7 @@ permissions:
       contents: read
 
 jobs:
-  GenerateArtifacts:
+  SetupEKS:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -34,3 +34,30 @@ jobs:
         kubectl get nodes
         echo $GITHUB_REPOSITORY
         sed -i "s|testrepo|${GITHUB_REPOSITORY}|g" runner.yaml
+        cat runner.yaml
+        kubect apply -f runner.yaml
+  EKSGihubRunner:
+    runs-on: self-hosted
+    needs: SetupEKS
+    steps:
+    - name: setup kube config
+      run: |
+        echo "tested"
+  DeleteRunner:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ secrets.OIDC_IAM_ROLE }}
+        role-session-name: ${{ github.sha }} 
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+    - name: setup kube config
+      run: |
+        make eks
+        kubectl get nodes
+        echo $GITHUB_REPOSITORY
+        sed -i "s|testrepo|${GITHUB_REPOSITORY}|g" runner.yaml
+        cat runner.yaml
+        kubect delete -f runner.yaml
