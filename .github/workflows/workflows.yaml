@@ -1,5 +1,4 @@
 name: configure github runner in eks
-
 on:
   push:
     branches:
@@ -33,3 +32,5 @@ jobs:
       run: |
         make eks
         kubectl get nodes
+        echo $GITHUB_REPOSITORY
+        sed -i "s|testrepo|${GITHUB_REPOSITORY}|g" runner.yaml
