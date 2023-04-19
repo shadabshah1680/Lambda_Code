@@ -29,10 +29,7 @@ jobs:
         role-to-assume: ${{ secrets.OIDC_IAM_ROLE }}
         role-session-name: ${{ github.sha }} 
         aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-  # ads_helm_deployment:
-  #   needs: GenerateArtifacts
-  #   runs-on: ubuntu-latest
-  #   - name: test
-  #     run:
-  #       - aws s3 ls
-  #       - make eks
+    - name: setup kube config
+      run: |
+        make eks
+        kubectl get nodes
