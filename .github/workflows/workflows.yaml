@@ -1,12 +1,38 @@
-name: learn-github-actions
-on: [push]
+name: configure github runner in eks
+
+on:
+  push:
+    branches:
+      - main
+env:
+  BUILD_NUMBER: ${{ github.run_number }}
+  GH_SHA: ${{ github.sha }}
+  GH_BRANCH: ${{ github.ref_name }}
+  GH_OWNER: shadabshah1680
+  GH_REPO_NAME: Lambda_Code
+  EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
+  OIDC_ROLE_ARN: ${{ secrets.OIDC_IAM_ROLE }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  ANSIBLE_BRANCH: main
+permissions:
+      id-token: write 
+      contents: read
+
 jobs:
-  check-bats-version:
-    runs-on: [self-hosted]
+  GenerateArtifacts:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+    - uses: actions/checkout@v3
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ secrets.OIDC_IAM_ROLE }}
+        role-session-name: ${{ github.sha }} 
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+  ads_helm_deployment:
+    needs: GenerateArtifacts
+    runs-on: ubuntu-latest
+    - name: test
+      run:
+        - aws s3 ls
+        - make eks

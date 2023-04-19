@@ -5,6 +5,10 @@ SHORT_SHA=$(COMMIT)
 FUNCTION_NAME=dockerized_lambda_check_open_ports
 ECR_REPO_NAME=shadab
 
+eks:
+
+	aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME} --region ${AWS_DEFAULT_REGION}
+
 layer:
 	mkdir lambda_package
 	pip install openpyxl -t lambda_package
