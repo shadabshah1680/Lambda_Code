@@ -30,36 +30,4 @@ jobs:
         aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
     - name: setup kube config
       run: |
-        make eks
-        kubectl get nodes
-        echo $GITHUB_REPOSITORY
-        sed -i "s|testrepo|${GITHUB_REPOSITORY}|g" runner.yaml
-        cat runner.yaml
-        kubectl apply -f runner.yaml
-  EKSGihubRunner:
-    runs-on: self-hosted
-    needs: SetupEKS
-    steps:
-    - name: setup kube config
-      run: |
-        echo "tested" 
-        echo "maaz"
-  DeleteRunner:
-    runs-on: ubuntu-latest
-    needs: EKSGihubRunner
-    steps:
-    - uses: actions/checkout@v3
-    - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: ${{ secrets.OIDC_IAM_ROLE }}
-        role-session-name: ${{ github.sha }} 
-        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-    - name: setup kube config
-      run: |
-        make eks
-        kubectl get nodes
-        echo $GITHUB_REPOSITORY
-        sed -i "s|testrepo|${GITHUB_REPOSITORY}|g" runner.yaml
-        cat runner.yaml
-        kubectl delete -f runner.yaml
+        echo "hi"
