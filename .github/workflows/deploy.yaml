@@ -2,7 +2,7 @@ on:
   release:
     types: [created]
   push:
-    branches: [ git-action , Feature/Docker-Base-Images ]
+    branches: [ main ]
   workflow_run:
     workflows: 
       - configure github runner in eks
