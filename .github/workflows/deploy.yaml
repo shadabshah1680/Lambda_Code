@@ -2,7 +2,9 @@ on:
   release:
     types: [created]
   push:
-    branches: [ main ]
+    paths:
+      - Makefile
+    branches: [ any ]
   workflow_run:
     workflows: 
       - configure github runner in eks
