@@ -1,15 +1,15 @@
 on:
-  release:
-    types: [created]
-  push:
-    paths:
-      - Makefile
-    branches: [ any ]
   workflow_run:
-    workflows: 
-      - configure github runner in eks
+    workflows:
+      - 'configure github runner in eks'
     types:
       - completed
+  push:
+    branches: [any]
+    paths:
+      - Makefile
+  release:
+    types: [created]
 
 name: Deploy to Amazon ECS
 
