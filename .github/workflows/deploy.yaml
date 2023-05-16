@@ -1,0 +1,20 @@
+on:
+  release:
+    types: [created]
+  push:
+    branches: [ git-action , Feature/Docker-Base-Images ]
+  workflow_run:
+    workflows: 
+      - configure github runner in eks
+    types:
+      - completed
+
+name: Deploy to Amazon ECS
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
