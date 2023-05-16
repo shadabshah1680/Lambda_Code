@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - Makefile
 env:
   BUILD_NUMBER: ${{ github.run_number }}
   GH_SHA: ${{ github.sha }}
