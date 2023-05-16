@@ -35,6 +35,7 @@ function:
 	--layers ${LAYER_ARN} \
 	--zip-file fileb://lambda_function.zip
 	
+	
 
 update-function:
 	zip lambda_function.zip ${FUNCTION_NAME}.py
