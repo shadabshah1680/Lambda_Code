@@ -5,9 +5,7 @@ on:
     types:
       - completed
   push:
-    branches: [any]
-    paths:
-      - Makefile
+    branches: [main]
   release:
     types: [created]
 
