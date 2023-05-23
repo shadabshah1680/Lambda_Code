@@ -25,13 +25,14 @@ jobs:
       labels:
         - self-hosted
     steps:
-    - uses: actions/checkout@v3
-    - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: ${{ secrets.OIDC_IAM_ROLE }}
-        role-session-name: ${{ github.sha }} 
-        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+#     - uses: actions/checkout@v3
+#     - name: configure aws credentials
+#       uses: aws-actions/configure-aws-credentials@v1
+#       with:
+#         role-to-assume: ${{ secrets.OIDC_IAM_ROLE }}
+#         role-session-name: ${{ github.sha }} 
+#         aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
     - name: setup kube config
       run: |
         echo "hi"
+        systemctl docker status
