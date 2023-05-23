@@ -1,7 +1,6 @@
 SHELL := /bin/bash
 COMMIT := $(shell git rev-parse --short HEAD)
 SHORT_SHA=$(COMMIT)
-
 .PHONY: layer role-policy function
 FUNCTION_NAME=dockerized_lambda_check_open_ports
 ECR_REPO_NAME=shadab
